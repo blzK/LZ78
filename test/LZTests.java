@@ -235,7 +235,7 @@ public class LZTests {
        
         int sum = 0;
         int i = 0;
-        for (i = 0; i < 150; i++) {
+        for (i = 0; i < 1500; i++) {
             sum += i;
             sb.append("011235498402106846084065410687408/0/70");
         }
@@ -244,7 +244,9 @@ public class LZTests {
         
         String code=lz.getCode();
         System.out.println(code);
-        lz.decode(lz.getCode());
+        
+ 
+        System.out.println(lz.decode(lz.getCode()));   
         System.out.println(lz.getDecode());
         System.out.println(lz.getDictDecod());
         System.out.println(" CODE ");
