@@ -11,11 +11,10 @@ public class LZ {
 
     private Map<String, Integer> dict = new LinkedHashMap<>();
     private Map<Integer, String> dictDecod = new LinkedHashMap<>();
-    private int alpha = 0;
-    //private StringBuilder data = new StringBuilder("");
+
     private StringBuilder code = new StringBuilder("");
     private StringBuilder decode = new StringBuilder("");
-    private final String delimiter="|*";
+    private final String delimiter = "|";
 
     public Map<String, Integer> getDict() {
         return dict;
@@ -26,6 +25,7 @@ public class LZ {
     }
 
     public void code(String s) {
+        int alpha = 0;
         int i = 0;
         int j = 1;
         int len = s.length();
@@ -39,11 +39,18 @@ public class LZ {
 //            }
 //        }
 //        s = s1.toString();
+        
+        
         while (i < s.length() && j <= s.length()) {
-
-            if (dict.containsKey(s.substring(i, j))) {// If in dictionnary
-                j++;
-                if (j - 1 == s.length()) {//If at the end of the String
+            
+            String sub = s.substring(i, j);
+            String sub2=s.substring(i, j - 1);
+            System.out.println("************");
+            System.out.println("SUB = "+ sub + " SUB2= " + sub2);
+            
+            if (dict.containsKey(sub)) {// If in dictionnary, we increase search field
+                j++;                    
+                if (j - 1 == s.length()) {//If at the end of the String don't, just end code
                     code.append("E").append(dico(s.substring(i, j - 1)));
                     break;
                 }
@@ -51,35 +58,37 @@ public class LZ {
 
             } else {// If not in dictionnary
 
-                char sub = s.charAt(j - 1);
-                boolean isNumber = false;
+                char lastCharofSub = s.charAt(j - 1);   //Next char
+                boolean isNumber = false;   //IsNext char a number?
                 try {
-                    Integer.parseInt(Character.toString(sub));
+                    Integer.parseInt(Character.toString(lastCharofSub));
                     isNumber = true;
                 } catch (NumberFormatException e) {
                     isNumber = false;
                 }
-                if (dico(s.substring(i, j - 1)) == null) {
-                    dict.put(s.substring(i, j), alpha + 1);
-                    if (isNumber == false) {
-                        code.append(s.charAt(j - 1)).append(0);
-                    } else {
-                        code.append(delimiter).append(sub).append(delimiter).append(0);
+                if (dico(sub2) == null) { //if subentry not in dictionnary then create new entry in dictionnary
+                    dict.put(sub, alpha + 1); 
+                    System.out.println("Nous rajoutons au code "+ lastCharofSub);
+                    if (isNumber == false) { //then put into code, without delimiters if lastchar is a number
+                        code.append(lastCharofSub).append(0);
+                    } else {//put into code with delimiters
+                        code.append(delimiter).append(lastCharofSub).append(delimiter).append(0);
                     }
 
-                } else {
-
-                    dict.put(s.substring(i, j), alpha + 1);
+                } else {    //if subentry in dictionnary, create entry for entire entry
+                    dict.put(sub, alpha + 1);
+                    System.out.println("Nous rajoutons au code "+ dico(sub2));
                     if (isNumber == false) {
-                        code.append(s.charAt(j - 1)).append(dico(s.substring(i, j - 1)));
+                        code.append(s.charAt(j - 1)).append(dico(sub2));
                     } else {
-                        code.append(delimiter).append(sub).append(dico(s.substring(i, j - 1))).append(delimiter).append(0);
+                        code.append(delimiter).append(lastCharofSub).append(delimiter).append(dico(sub2));
                     }
                 }
                 alpha++;
             }
             i = j;
             j++;
+            
         }
     }
 
@@ -89,7 +98,7 @@ public class LZ {
         int len;
         int i = 0;
         int j = 1;
-
+//////      If reading a Binary Input
 ////        if (s.charAt(j + 1) != 'A' || s.charAt(j + 1) != 'B') {
 ////            if (i + 1 == j) {
 ////                System.out.println("jjjjjjjjj");
@@ -100,8 +109,15 @@ public class LZ {
 ////
 ////            }
 ////        }
+
         //while we are in the string
         while (j < s.length()) {
+            boolean isSpecial = false;
+            if (Character.toString(s.charAt(i)).equals(delimiter) && j + delimiter.length() < s.length()) {
+                i++;
+                j += delimiter.length();
+                isSpecial = true;
+            }
             int subInt;
             System.out.println("**************");
             System.out.println("i = " + i);
@@ -114,7 +130,9 @@ public class LZ {
 // We test if we have a letter or a number
                 if (j + 1 < s.length()) {
                     boolean isNumber;
+
                     isNumber = false;
+
                     try {
                         System.out.println("A REGARDER " + s.charAt(j + 1));
                         Integer.parseInt(Character.toString(s.charAt(j + 1)));
@@ -123,7 +141,7 @@ public class LZ {
                         isNumber = false;
                     }
                     // while (s.charAt(j + 1) != 'A' || s.charAt(j + 1) != 'B') {
-                    while (isNumber == true) {
+                    while (isNumber == true && j < s.length()) {  //we take all the number we get
                         System.out.println("NOMBRE A DEUX CHIFFRES");
                         System.out.println(s.charAt(j + 1));
                         j++;
@@ -142,9 +160,11 @@ public class LZ {
                 }
             }
 
-            if (i + 1 == j) {
-                System.out.println("Nous avons un nommbre à 1 chiffre");
+            if (i + 1 == j) { //We test if is a Number 
+                System.out.println("Nous avons un nombre à 1 chiffre");
                 subInt = Character.getNumericValue(s.charAt(j));
+            } else if (isSpecial == true) {
+                subInt = Integer.parseInt(s.substring(i + 2, j + 1));
             } else {
                 System.out.println("Nous avons un nommbre à plusieurs  chiffres");
                 subInt = Integer.parseInt(s.substring(i + 1, j + 1));
@@ -169,7 +189,9 @@ public class LZ {
                 decode.append(tmp_v); //On en est là
             } else {
                 dictDecod.put(beta, String.valueOf(s.charAt(i)));
-                decode.append(String.valueOf(s.charAt(i)));
+                if (!Character.toString(s.charAt(i)).equals(delimiter)) {
+                    decode.append(String.valueOf(s.charAt(i)));
+                }
             }
 ////////                if (dictDecod.containsKey(Character.getNumericValue(s.charAt(i + 1)))) {
 ////////                    if (String.valueOf(s.charAt(i)).equals("E")) {
@@ -198,17 +220,17 @@ public class LZ {
             System.out.println("i = " + i);
             System.out.println("j = " + j);
         }
-
-//        len = decode.length();
-//
-//        for (int k = 0; k < len; k++) {
-//            if (decode.charAt(k) == 'A') {
-//                s1.append('0');
-//            } else if (decode.charAt(k) == 'B') {
-//                s1.append('1');
-//            }
-//        }
-//        decode = s1;
+//////      If reading Binary Input
+////        len = decode.length();
+////
+////        for (int k = 0; k < len; k++) {
+////            if (decode.charAt(k) == 'A') {
+////                s1.append('0');
+////            } else if (decode.charAt(k) == 'B') {
+////                s1.append('1');
+////            }
+////        }
+////        decode = s1;
         return decode.toString();
 
     }
