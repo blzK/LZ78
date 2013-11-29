@@ -177,12 +177,12 @@ public class LZ {
             if (dictDecod.containsKey(subInt)) {
                 System.out.println("dico contient " + subInt + " qui est " + dico(subInt));
                 //FONCTION A VERIFIER
-                if (String.valueOf(s.charAt(i)).equals("E")) {
+                if (String.valueOf(s.charAt(j-1)).equals("E")) {
                     System.out.println("__________________FIN___________");
                     System.out.println("Nous avons à la fin "+s.substring(j));
-                    System.out.println("on rajoute "+dico(Integer.parseInt(s.substring(j-1))));
-                    decode.append(dico(Integer.parseInt(s.substring(j-1))));
-                    dictDecod.put(-1, dico(Integer.parseInt(s.substring(j-1))));
+                    System.out.println("on rajoute "+dico(Integer.parseInt(s.substring(j))));
+                    decode.append(dico(Integer.parseInt(s.substring(j))));
+                    dictDecod.put(-1, dico(Integer.parseInt(s.substring(j))));
                     /*decode.append(dico(Character.getNumericValue(s.charAt(j))));
                     dictDecod.put(-1, dico(Character.getNumericValue(s.charAt(j))));*/
                     System.out.println("__________________FIN___________");
