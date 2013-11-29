@@ -55,6 +55,14 @@ public class LZTests {
         
     }
     
+     @Test
+    public void testEpsiloneBinaryInput() {
+        LZ lz = new LZ();
+        lz.code("1111");
+        assertEquals("|1|0|1|1E1", lz.getCode());
+        
+    }
+    
     @Test
     public void testCodeLongDifferentChars() {
         LZ lz = new LZ();
@@ -224,21 +232,23 @@ public class LZTests {
     public void decodeTest5() {
         LZ lz = new LZ();
         StringBuilder sb = new StringBuilder("");
-        StringBuilder sbResult = new StringBuilder("");
-        
+       
         int sum = 0;
         int i = 0;
-        for (i = 0; i < 147; i++) {
+        for (i = 0; i < 150; i++) {
             sum += i;
-            sb.append("1");
+            sb.append("011235498402106846084065410687408/0/70");
         }
         System.out.println("code ");
         lz.code(sb.toString());
-        System.out.println(lz.getCode());
+        
+        String code=lz.getCode();
+        System.out.println(code);
         lz.decode(lz.getCode());
         System.out.println(lz.getDecode());
         System.out.println(lz.getDictDecod());
-        
+        System.out.println(" CODE ");
+        System.out.println(code);
         assertEquals(sb.toString(), lz.getDecode().toString());
         
     }
@@ -258,6 +268,24 @@ public class LZTests {
         System.out.println("Expected decode");
         System.out.println("La religion est l'esprit d'un monde sans esprit comme elle est le coeur d'un monde sans coeur");
         assertEquals("La religion est l'esprit d'un monde sans esprit comme elle est le coeur d'un monde sans coeur", lz.getDecode());
+        
+    }
+    
+     @Test
+    public void decodeTest6() {
+        LZ lz = new LZ();
+        String input="La religion est l'es45465prit d'un monde sans esprit 486486comme elle e86456st le coeur d'un mo5456nde sans coeur";
+        lz.code(input);
+        System.out.println("code ");
+        System.out.println(lz.getCode());
+        String decode = lz.decode(lz.getCode());
+        System.out.println("Dictionnaire");
+        System.out.println(lz.getDictDecod());
+        System.out.println("Calculated decode");
+        System.out.println(lz.getDecode());
+        System.out.println("Expected decode");
+        System.out.println(input);
+        assertEquals(input, lz.getDecode());
         
     }
 }
