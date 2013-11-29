@@ -20,7 +20,7 @@ public class LZ {
         int i = 0;
         int j = 1;
         int len = s.length();
-//
+
 //        StringBuilder s1 = new StringBuilder();
 //        for (int k = 0; k < len; k++) {
 //            if (s.charAt(k) == '0') {
@@ -30,34 +30,44 @@ public class LZ {
 //            }
 //        }
 //        s = s1.toString();
-
         while (i < s.length() && j <= s.length()) {
 
-            if (dict.containsKey(s.substring(i, j))) {
+            if (dict.containsKey(s.substring(i, j))) {// If in dictionnary
                 j++;
-                if (j - 1 == s.length()) {
-
-                    code.append("E");
-                    code.append(dico(s.substring(i, j - 1)));
+                if (j - 1 == s.length()) {//If at the end of the String
+                    code.append("E").append(dico(s.substring(i, j - 1)));
                     break;
                 }
                 continue;
 
-            } else {
+            } else {// If not in dictionnary
+
+                char sub = s.charAt(j - 1);
+                boolean isNumber = false;
+                try {
+                    Integer.parseInt(Character.toString(sub));
+                    isNumber = true;
+                } catch (NumberFormatException e) {
+                    isNumber = false;
+                }
                 if (dico(s.substring(i, j - 1)) == null) {
-
                     dict.put(s.substring(i, j), alpha + 1);
-                    code.append(s.charAt(j - 1));
-                    code.append(0);
+                    if (isNumber == false) {
+                        code.append(s.charAt(j - 1)).append(0);
+                    } else {
+                        code.append("'").append(sub).append("'").append(0);
+                    }
 
-                    alpha++;
                 } else {
 
                     dict.put(s.substring(i, j), alpha + 1);
-                    code.append(s.charAt(j - 1));
-                    code.append(dico(s.substring(i, j - 1)));
-                    alpha++;
+                    if (isNumber == false) {
+                        code.append(s.charAt(j - 1)).append(dico(s.substring(i, j - 1)));
+                    } else {
+                        code.append("'").append(sub).append(dico(s.substring(i, j - 1))).append("'").append(0);
+                    }
                 }
+                alpha++;
             }
             i = j;
             j++;
@@ -81,35 +91,56 @@ public class LZ {
 ////
 ////            }
 ////        }
+        //while we are in the string
         while (j < s.length()) {
             int subInt;
             System.out.println("**************");
             System.out.println("i = " + i);
             System.out.println("j = " + j);
             System.out.println("**************");
+            if (j + 1 < s.length()) {
+                System.out.println("**************");
+                System.out.println("**************");
 
-//            while (s.charAt(j + 1) == 'A' || s.charAt(j + 1) == 'B') {
-//                
-//                if (j + 1 < s.length()) {
-//                    System.out.println(s.charAt(j + 1));
-//                    j++;
-//                    System.out.println("j "+ j);
-//                }
-//            }
-//            if (s.charAt(j + 1) != 'A' || s.charAt(j + 1) != 'B') {
+// We test if we have a letter or a number
+                if (j + 1 < s.length()) {
+                    boolean isNumber;
+                    isNumber = false;
+                    try {
+                        System.out.println("A REGARDER " + s.charAt(j + 1));
+                        Integer.parseInt(Character.toString(s.charAt(j + 1)));
+                        isNumber = true;
+                    } catch (NumberFormatException e) {
+                        isNumber = false;
+                    }
+                    // while (s.charAt(j + 1) != 'A' || s.charAt(j + 1) != 'B') {
+                    while (isNumber == true) {
+                        System.out.println("NOMBRE A DEUX CHIFFRES");
+                        System.out.println(s.charAt(j + 1));
+                        j++;
+                        System.out.println("on increment DONC j =" + j);
+                        if (j + 1 < s.length()) {
+                            try {
+                                Integer.parseInt(Character.toString(s.charAt(j + 1)));
+                                isNumber = true;
+                            } catch (NumberFormatException e) {
+                                isNumber = false;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (i + 1 == j) {
-
-                // subInt=Character.toString(s.charAt(j));
+                System.out.println("Nous avons un nommbre à 1 chiffre");
                 subInt = Character.getNumericValue(s.charAt(j));
             } else {
-
-                subInt = Integer.parseInt(s.substring(i + 1, j));
+                System.out.println("Nous avons un nommbre à plusieurs  chiffres");
+                subInt = Integer.parseInt(s.substring(i + 1, j + 1));
 
             }
-//            } 
-//        else {
-//                throw new IllegalArgumentException("No valid input");
-//            }
 
             System.out.println("SUB " + s.substring(i, j + 1));
             System.out.println("on regarde " + subInt + " et " + s.charAt(i) + " at i = " + i + " j = " + j);

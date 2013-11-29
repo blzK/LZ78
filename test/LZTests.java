@@ -96,8 +96,8 @@ public class LZTests {
         assertEquals("a0b0b1a3a2b5b4E3", lz.getCode());
 
     }
-    
-      @Test
+
+    @Test
     public void testLongCode4() {
         LZ lz = new LZ();
         lz.code("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"); //55
@@ -111,8 +111,53 @@ public class LZTests {
         assertEquals("a0a1a2a3a4a5a6a7a8a9a10", lz.getCode());
 
     }
+
+    @Test
+    public void testLongCode6() {
+        //This test only applies to codes not ending with Epsilone
+        LZ lz = new LZ();
+
+        StringBuilder sb = new StringBuilder("");
+        StringBuilder sbResult = new StringBuilder("");
+
+        int sum = 0;
+        int i = 0;
+        for (i = 0; i < 55; i++) {
+            sum += i;
+            sb.append("a");
+
+        }
+
+        int len = sb.toString().length();
+        int j = 1;
+        while (len > 0) {
+
+            sbResult.append("a").append(j - 1);
+            j++;
+            len = len - j;
+
+        }
+//        System.out.println("i " + i + " j " + j);
+//        if (j != i) {
+//            sbResult.append("E").append(lz.dictDecod(i-j));
+//        }
+        System.out.println(sum + " SUM ");
+        System.out.println("len " + len + " j " + j);
+        System.out.println("Code ");
+        System.out.println(sb.toString());
+        lz.code(sb.toString());
+        System.out.println("Dictionnaire");
+        System.out.println(lz.dict);
+        System.out.println("Calculated Code");
+        System.out.println(lz.code);
+        System.out.println("Expected Code");
+        System.out.println(sbResult.toString());
+        assertEquals(sbResult.toString(), lz.getCode());
+
+    }
+
 //    @Test
-//    public void testLongCode5() {
+//    public void testLongCode6() {
 //        LZ lz = new LZ();
 //        lz.code("bed spreaders spread spreads on beds");
 //        System.out.println("Dictionnaire");
@@ -124,7 +169,6 @@ public class LZTests {
 //        assertEquals("b0e0d0 0s0p0r0a2e3s7s4r6d8p11e7a0 3r14s13o4n0b4d2E5", lz.getCode());
 //
 //    }
-
     @Test
     public void decodeTest() {
         LZ lz = new LZ();
@@ -133,18 +177,48 @@ public class LZTests {
         System.out.println(lz.decode);
         System.out.println("abbbbbbaccccbb");
         assertEquals("abbbbbbaccccbb", lz.decode.toString());
+    }
+
+    @Test
+    public void decodeTest2() {
+        LZ lz = new LZ();
+        lz.code("123");
+        System.out.println("code ");
+        System.out.println(lz.getCode());
+        lz.decode(lz.code.toString());
+        System.out.println(lz.decode);
+        assertEquals("1010", lz.decode.toString());
 
     }
     
         @Test
-    public void decodeTest2() {
-        LZ lz = new LZ();
-        lz.code("1010");
-        lz.decode(lz.code.toString());
-//        lz.decode("B0A0A1");
+    public void decodeTest3() {
+  LZ lz = new LZ();
+    
+        lz.decode("a0a1a2a3a4a5a6a7a8a9a10");
         System.out.println(lz.decode);
-       // System.out.println("1010");
-        assertEquals("1010", lz.decode.toString());
+        System.out.println(lz.dictDecod);
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        assertEquals("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", lz.decode.toString());
+
+    }
+    
+
+    @Test
+    public void decodeTest4() {
+         LZ lz = new LZ();
+
+        lz.code("La religion est l'esprit d'un monde sans esprit comme elle est le coeur d'un monde sans coeur");
+        System.out.println("code ");
+        System.out.println(lz.getCode());
+        String decode = lz.decode(lz.getCode());
+        System.out.println("Dictionnaire");
+        System.out.println(lz.dictDecod);
+        System.out.println("Calculated decode");
+        System.out.println(lz.decode);
+        System.out.println("Expected decode");
+        System.out.println("La religion est l'esprit d'un monde sans esprit comme elle est le coeur d'un monde sans coeur");
+        assertEquals("La religion est l'esprit d'un monde sans esprit comme elle est le coeur d'un monde sans coeur", lz.getDecode());
 
     }
 }
