@@ -96,8 +96,23 @@ public class LZTests {
         assertEquals("a0b0b1a3a2b5b4E3", lz.getCode());
 
     }
+    
+      @Test
+    public void testLongCode4() {
+        LZ lz = new LZ();
+        lz.code("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"); //55
+        //
+        System.out.println("Dictionnaire");
+        System.out.println(lz.dict);
+        System.out.println("Code");
+        System.out.println(lz.code);
+        //System.out.println("a0a1b0b2aE");
+
+        assertEquals("a0a1a2a3a4a5a6a7a8a9a10", lz.getCode());
+
+    }
 //    @Test
-//    public void testLongCode4() {
+//    public void testLongCode5() {
 //        LZ lz = new LZ();
 //        lz.code("bed spreaders spread spreads on beds");
 //        System.out.println("Dictionnaire");
