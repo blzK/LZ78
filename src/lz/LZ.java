@@ -9,12 +9,21 @@ import java.util.Map;
  */
 public class LZ {
 
-    public Map<String, Integer> dict = new LinkedHashMap<>();
-    public Map<Integer, String> dictDecod = new LinkedHashMap<>();
+    private Map<String, Integer> dict = new LinkedHashMap<>();
+    private Map<Integer, String> dictDecod = new LinkedHashMap<>();
     private int alpha = 0;
-    public StringBuilder data = new StringBuilder("");
-    public StringBuilder code = new StringBuilder("");
-    public StringBuilder decode = new StringBuilder("");
+    //private StringBuilder data = new StringBuilder("");
+    private StringBuilder code = new StringBuilder("");
+    private StringBuilder decode = new StringBuilder("");
+    private final String delimiter="|*";
+
+    public Map<String, Integer> getDict() {
+        return dict;
+    }
+
+    public Map<Integer, String> getDictDecod() {
+        return dictDecod;
+    }
 
     public void code(String s) {
         int i = 0;
@@ -55,7 +64,7 @@ public class LZ {
                     if (isNumber == false) {
                         code.append(s.charAt(j - 1)).append(0);
                     } else {
-                        code.append("'").append(sub).append("'").append(0);
+                        code.append(delimiter).append(sub).append(delimiter).append(0);
                     }
 
                 } else {
@@ -64,7 +73,7 @@ public class LZ {
                     if (isNumber == false) {
                         code.append(s.charAt(j - 1)).append(dico(s.substring(i, j - 1)));
                     } else {
-                        code.append("'").append(sub).append(dico(s.substring(i, j - 1))).append("'").append(0);
+                        code.append(delimiter).append(sub).append(dico(s.substring(i, j - 1))).append(delimiter).append(0);
                     }
                 }
                 alpha++;

@@ -61,9 +61,9 @@ public class LZTests {
         LZ lz = new LZ();
         lz.code("aaabaababa");
         System.out.println("Dictionnaire");
-        System.out.println(lz.dict);
+        System.out.println(lz.getDict());
         System.out.println("Code");
-        System.out.println(lz.code);
+        System.out.println(lz.getCode());
         System.out.println("a0a1b0b2b1E1");
         assertEquals("a0a1b0b2b1E1", lz.getCode());
 
@@ -74,9 +74,9 @@ public class LZTests {
         LZ lz = new LZ();
         lz.code("abbbbbbaccccbb");
         System.out.println("Dictionnaire");
-        System.out.println(lz.dict);
+        System.out.println(lz.getDict());
         System.out.println("Code");
-        System.out.println(lz.code);
+        System.out.println(lz.getCode());
         //System.out.println("a0a1b0b2aE");
 
         assertEquals("a0b0b2b3c1c0c6E3", lz.getCode());
@@ -88,9 +88,9 @@ public class LZTests {
         LZ lz = new LZ();
         lz.code("ababababababababab");
         System.out.println("Dictionnaire");
-        System.out.println(lz.dict);
+        System.out.println(lz.getDict());
         System.out.println("Code");
-        System.out.println(lz.code);
+        System.out.println(lz.getCode());
         //System.out.println("a0a1b0b2aE");
 
         assertEquals("a0b0b1a3a2b5b4E3", lz.getCode());
@@ -103,9 +103,9 @@ public class LZTests {
         lz.code("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"); //55
         //
         System.out.println("Dictionnaire");
-        System.out.println(lz.dict);
+        System.out.println(lz.getDict());
         System.out.println("Code");
-        System.out.println(lz.code);
+        System.out.println(lz.getCode());
         //System.out.println("a0a1b0b2aE");
 
         assertEquals("a0a1a2a3a4a5a6a7a8a9a10", lz.getCode());
@@ -139,7 +139,7 @@ public class LZTests {
         }
 //        System.out.println("i " + i + " j " + j);
 //        if (j != i) {
-//            sbResult.append("E").append(lz.dictDecod(i-j));
+//            sbResult.append("E").append(lz.getDictDecod())(i-j));
 //        }
         System.out.println(sum + " SUM ");
         System.out.println("len " + len + " j " + j);
@@ -147,9 +147,9 @@ public class LZTests {
         System.out.println(sb.toString());
         lz.code(sb.toString());
         System.out.println("Dictionnaire");
-        System.out.println(lz.dict);
+        System.out.println(lz.getDict());
         System.out.println("Calculated Code");
-        System.out.println(lz.code);
+        System.out.println(lz.getCode());
         System.out.println("Expected Code");
         System.out.println(sbResult.toString());
         assertEquals(sbResult.toString(), lz.getCode());
@@ -161,9 +161,9 @@ public class LZTests {
 //        LZ lz = new LZ();
 //        lz.code("bed spreaders spread spreads on beds");
 //        System.out.println("Dictionnaire");
-//        System.out.println(lz.dict);
+//        System.out.println(lz.getDict());
 //        System.out.println("Calculated Code");
-//        System.out.println(lz.code);
+//        System.out.println(lz.getCode());
 //        System.out.println("Expected Code");
 //        System.out.println("b0e0d0 0s0p0r0a2e3s7s4r6d8p11e7a0 3r14s13o4n0b4d2E5");
 //        assertEquals("b0e0d0 0s0p0r0a2e3s7s4r6d8p11e7a0 3r14s13o4n0b4d2E5", lz.getCode());
@@ -173,10 +173,10 @@ public class LZTests {
     public void decodeTest() {
         LZ lz = new LZ();
         lz.code("abbbbbbaccccbb");
-        lz.decode(lz.code.toString());
-        System.out.println(lz.decode);
+        lz.decode(lz.getCode().toString());
+        System.out.println(lz.getDecode());
         System.out.println("abbbbbbaccccbb");
-        assertEquals("abbbbbbaccccbb", lz.decode.toString());
+        assertEquals("abbbbbbaccccbb", lz.getDecode().toString());
     }
 
     @Test
@@ -185,9 +185,9 @@ public class LZTests {
         lz.code("123");
         System.out.println("code ");
         System.out.println(lz.getCode());
-        lz.decode(lz.code.toString());
-        System.out.println(lz.decode);
-        assertEquals("1010", lz.decode.toString());
+        lz.decode(lz.getCode().toString());
+        System.out.println(lz.getDecode());
+        assertEquals("1010", lz.getDecode().toString());
 
     }
     
@@ -196,10 +196,10 @@ public class LZTests {
   LZ lz = new LZ();
     
         lz.decode("a0a1a2a3a4a5a6a7a8a9a10");
-        System.out.println(lz.decode);
-        System.out.println(lz.dictDecod);
+        System.out.println(lz.getDecode());
+        System.out.println(lz.getDictDecod());
         System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        assertEquals("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", lz.decode.toString());
+        assertEquals("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", lz.getDecode().toString());
 
     }
     
@@ -213,9 +213,9 @@ public class LZTests {
         System.out.println(lz.getCode());
         String decode = lz.decode(lz.getCode());
         System.out.println("Dictionnaire");
-        System.out.println(lz.dictDecod);
+        System.out.println(lz.getDictDecod());
         System.out.println("Calculated decode");
-        System.out.println(lz.decode);
+        System.out.println(lz.getDecode());
         System.out.println("Expected decode");
         System.out.println("La religion est l'esprit d'un monde sans esprit comme elle est le coeur d'un monde sans coeur");
         assertEquals("La religion est l'esprit d'un monde sans esprit comme elle est le coeur d'un monde sans coeur", lz.getDecode());
