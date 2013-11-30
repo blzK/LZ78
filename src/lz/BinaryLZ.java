@@ -1,3 +1,5 @@
+package lz;
+
 
 import lz.LZ;
 

@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import lz.BinaryLZ;
 import java.util.Random;
 import org.junit.Test;
 import static org.junit.Assert.*;
