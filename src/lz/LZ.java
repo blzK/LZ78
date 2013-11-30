@@ -45,8 +45,8 @@ public class LZ {
             
             String sub = s.substring(i, j);
             String sub2=s.substring(i, j - 1);
-            System.out.println("************");
-            System.out.println("SUB = "+ sub + " SUB2= " + sub2);
+//            System.out.println("************");
+//            System.out.println("SUB = "+ sub + " SUB2= " + sub2);
             
             if (dict.containsKey(sub)) {// If in dictionnary, we increase search field
                 j++;                    
@@ -68,7 +68,7 @@ public class LZ {
                 }
                 if (dico(sub2) == null) { //if subentry not in dictionnary then create new entry in dictionnary
                     dict.put(sub, alpha + 1); 
-                    System.out.println("Nous rajoutons au code "+ lastCharofSub);
+//                    System.out.println("Nous rajoutons au code "+ lastCharofSub);
                     if (isNumber == false) { //then put into code, without delimiters if lastchar is a number
                         code.append(lastCharofSub).append(0);
                     } else {//put into code with delimiters
@@ -77,7 +77,7 @@ public class LZ {
 
                 } else {    //if subentry in dictionnary, create entry for entire entry
                     dict.put(sub, alpha + 1);
-                    System.out.println("Nous rajoutons au code "+ dico(sub2));
+//                    System.out.println("Nous rajoutons au code "+ dico(sub2));
                     if (isNumber == false) {
                         code.append(s.charAt(j - 1)).append(dico(sub2));
                     } else {
@@ -92,7 +92,7 @@ public class LZ {
         }
     }
 
-    public String decode(String s) {
+    public void decode(String s) {
         int beta = 1;
         StringBuilder s1 = new StringBuilder("");
         int len;
@@ -119,13 +119,13 @@ public class LZ {
                 isSpecial = true;
             }
             int subInt;
-            System.out.println("**************");
-            System.out.println("i = " + i);
-            System.out.println("j = " + j);
-            System.out.println("**************");
+//            System.out.println("**************");
+//            System.out.println("i = " + i);
+//            System.out.println("j = " + j);
+//            System.out.println("**************");
             if (j + 1 < s.length()) {
-                System.out.println("**************");
-                System.out.println("**************");
+//                System.out.println("**************");
+//                System.out.println("**************");
 
 // We test if we have a letter or a number
                 if (j + 1 < s.length()) {
@@ -134,7 +134,7 @@ public class LZ {
                     isNumber = false;
 
                     try {
-                        System.out.println("A REGARDER " + s.charAt(j + 1));
+//                        System.out.println("A REGARDER " + s.charAt(j + 1));
                         Integer.parseInt(Character.toString(s.charAt(j + 1)));
                         isNumber = true;
                     } catch (NumberFormatException e) {
@@ -142,10 +142,10 @@ public class LZ {
                     }
                     // while (s.charAt(j + 1) != 'A' || s.charAt(j + 1) != 'B') {
                     while (isNumber == true && j < s.length()) {  //we take all the number we get
-                        System.out.println("NOMBRE A DEUX CHIFFRES");
-                        System.out.println(s.charAt(j + 1));
+//                        System.out.println("NOMBRE A DEUX CHIFFRES");
+//                        System.out.println(s.charAt(j + 1));
                         j++;
-                        System.out.println("on increment DONC j =" + j);
+//                        System.out.println("on increment DONC j =" + j);
                         if (j + 1 < s.length()) {
                             try {
                                 Integer.parseInt(Character.toString(s.charAt(j + 1)));
@@ -161,36 +161,33 @@ public class LZ {
             }
 
             if (i + 1 == j) { //We test if is a Number 
-                System.out.println("Nous avons un nombre à 1 chiffre");
+//                System.out.println("Nous avons un nombre à 1 chiffre");
                 subInt = Character.getNumericValue(s.charAt(j));
             } else if (isSpecial == true) {
                 subInt = Integer.parseInt(s.substring(i + 2, j + 1));
             } else {
-                System.out.println("Nous avons un nommbre à plusieurs  chiffres");
+//                System.out.println("Nous avons un nommbre à plusieurs  chiffres");
                 subInt = Integer.parseInt(s.substring(i + 1, j + 1));
 
             }
 
-            System.out.println("SUB " + s.substring(i, j + 1));
-            System.out.println("on regarde " + subInt + " et " + s.charAt(i) + " at i = " + i + " j = " + j);
+//            System.out.println("SUB " + s.substring(i, j + 1));
+//            System.out.println("on regarde " + subInt + " et " + s.charAt(i) + " at i = " + i + " j = " + j);
 
             if (dictDecod.containsKey(subInt)) {
-                System.out.println("dico contient " + subInt + " qui est " + dico(subInt));
-                //FONCTION A VERIFIER
-                if (String.valueOf(s.charAt(j-1)).equals("E")&&!s.substring(j).equals("E")) {
-                    System.out.println("__________________FIN___________");
-                    System.out.println("Nous avons à la fin "+s.substring(j));
-                    System.out.println("on rajoute "+dico(Integer.parseInt(s.substring(j))));
+//                System.out.println("dico contient " + subInt + " qui est " + dico(subInt));
+                if (String.valueOf(s.charAt(j-1)).equals("E")&&!s.substring(j).equals("E")) {//Epsilone decoding
+//                    System.out.println("__________________FIN___________");
+//                    System.out.println("Nous avons à la fin "+s.substring(j));
+//                    System.out.println("on rajoute "+dico(Integer.parseInt(s.substring(j))));
                     decode.append(dico(Integer.parseInt(s.substring(j))));
                     dictDecod.put(-1, dico(Integer.parseInt(s.substring(j))));
-                    /*decode.append(dico(Character.getNumericValue(s.charAt(j))));
-                    dictDecod.put(-1, dico(Character.getNumericValue(s.charAt(j))));*/
-                    System.out.println("__________________FIN___________");
+//                    System.out.println("__________________FIN___________");
                     break;
                 }
                 //FONCTION A VERIFIER
                 String tmp_v = dico(subInt) + Character.toString(s.charAt(i));
-                System.out.println("on met dans dico beta " + beta + " et " + tmp_v);
+//                System.out.println("on met dans dico beta " + beta + " et " + tmp_v);
                 dictDecod.put(beta, tmp_v);
                 decode.append(tmp_v); //On en est là
             } else {
@@ -214,17 +211,17 @@ public class LZ {
             beta++;
             //pb ici !
             // i += 2;
-            System.out.println("on increment j");
+//            System.out.println("on increment j");
 //                j++;
 //
 //            }
-            System.out.println("i = " + i);
-            System.out.println("j = " + j);
+//            System.out.println("i = " + i);
+//            System.out.println("j = " + j);
             i = j + 1;
             j = i + 1;
 
-            System.out.println("i = " + i);
-            System.out.println("j = " + j);
+//            System.out.println("i = " + i);
+//            System.out.println("j = " + j);
             if(Character.toString(decode.charAt(decode.length()-1)).equals("E")){
                 decode.deleteCharAt(decode.length()-1);
             }
@@ -240,7 +237,7 @@ public class LZ {
 ////            }
 ////        }
 ////        decode = s1;
-        return decode.toString();
+        
 
     }
 
@@ -253,10 +250,12 @@ public class LZ {
     }
 
     public String getCode() {
+        if(code.toString().isEmpty()){throw new IllegalStateException("Has not been coded");}
         return code.toString();
     }
 
     public String getDecode() {
+        if(decode.toString().isEmpty()){throw new IllegalStateException("Has not been decoded");}
         return decode.toString();
     }
 }
