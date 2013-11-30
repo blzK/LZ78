@@ -1,12 +1,29 @@
 package lz;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
-import lz.LZ;
+/**
+ *
+ * The BinaryLZ Class encapsulates LZ class in order to simplify binary input. 
+ * BinaryLZ does take only binary input.
+ * The BinaryLZ class enables LZ to get rid of any number delimiter.
+ * Thus it generates smaller output.
+ * 
+ */
+
 
 public class BinaryLZ {
 
-    private LZ lz = new LZ();
-
+    private final LZ lz = new LZ();
+  /**
+     *
+     * @param input is the String input to be coded.
+     * The input String must only contain '0' and '1' characters.
+     */
     public void code(String input) {
 
         StringBuilder s1 = new StringBuilder();
@@ -26,7 +43,10 @@ public class BinaryLZ {
 
         return lz.getCode();
     }
-
+    /**
+     *
+     * @param input is the String code input to be decoded.
+     */
     public void decode(String input) {
         lz.decode(input);
     }
@@ -48,4 +68,12 @@ public class BinaryLZ {
         return s1.toString();
     }
 
+    public boolean write(String input, String urlOutput) throws IOException{
+        lz.write(input,urlOutput);
+        return true;
+    }
+    
+    public String read(String url) throws FileNotFoundException, IOException{
+        return lz.read(url);
+    }
 }

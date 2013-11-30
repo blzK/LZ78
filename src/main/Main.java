@@ -6,17 +6,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import lz.LZ;
+import lz.BinaryLZ;
 import mtf.Mtf;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         FileManager file = new FileManager();
         String word = null;
         Mtf mtf;
-        LZ lz;
+        BinaryLZ lz;
         CodageParPlages cp;
 
         switch (args[0]) {
@@ -28,8 +28,13 @@ public class Main {
                 }
                 mtf = new Mtf();
                 mtf.codage(word);
-                lz = new LZ();
+                lz = new BinaryLZ();
                 lz.code(mtf.getCode());
+//                encoding test
+//                lz.write("test_write");
+//                lz.read("image.jpg");
+                
+                lz.write(lz.read("files2_original_1.txt"), "image_copy.test" );
                 try {
                     file.writeC(lz.getCode(), ".mz78", args[1]);
                 } catch (FileNotFoundException ex) {
@@ -42,8 +47,9 @@ public class Main {
                 } catch (Exception ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                lz = new LZ();
+                lz = new BinaryLZ();
                 lz.decode(word);
+                
                 mtf = new Mtf();
                 mtf.decodage(lz.getDecode());
                 try {

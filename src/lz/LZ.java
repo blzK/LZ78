@@ -1,19 +1,28 @@
 package lz;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  *
- * @author azathoth
+ * The LZ class encodes and decode according to the LZ78 algorithm.
+ *
  */
 public class LZ {
 
-    private Map<String, Integer> dict = new LinkedHashMap<>();
-    private Map<Integer, String> dictDecod = new LinkedHashMap<>();
+    private final Map<String, Integer> dict = new LinkedHashMap<>();
+    private final Map<Integer, String> dictDecod = new LinkedHashMap<>();
 
-    private StringBuilder code = new StringBuilder("");
-    private StringBuilder decode = new StringBuilder("");
+    private final StringBuilder code = new StringBuilder("");
+    private final StringBuilder decode = new StringBuilder("");
     private final String delimiter = "|";
 
     public Map<String, Integer> getDict() {
@@ -24,32 +33,25 @@ public class LZ {
         return dictDecod;
     }
 
+    /**
+     *
+     * @param s is the String input to be coded
+     */
     public void code(String s) {
         int alpha = 0;
         int i = 0;
         int j = 1;
         int len = s.length();
 
-//        StringBuilder s1 = new StringBuilder();
-//        for (int k = 0; k < len; k++) {
-//            if (s.charAt(k) == '0') {
-//                s1.append('A');
-//            } else if (s.charAt(k) == '1') {
-//                s1.append('B');
-//            }
-//        }
-//        s = s1.toString();
-        
-        
         while (i < s.length() && j <= s.length()) {
-            
+
             String sub = s.substring(i, j);
-            String sub2=s.substring(i, j - 1);
+            String sub2 = s.substring(i, j - 1);
 //            System.out.println("************");
 //            System.out.println("SUB = "+ sub + " SUB2= " + sub2);
-            
+
             if (dict.containsKey(sub)) {// If in dictionnary, we increase search field
-                j++;                    
+                j++;
                 if (j - 1 == s.length()) {//If at the end of the String don't, just end code
                     code.append("E").append(dico(s.substring(i, j - 1)));
                     break;
@@ -67,7 +69,7 @@ public class LZ {
                     isNumber = false;
                 }
                 if (dico(sub2) == null) { //if subentry not in dictionnary then create new entry in dictionnary
-                    dict.put(sub, alpha + 1); 
+                    dict.put(sub, alpha + 1);
 //                    System.out.println("Nous rajoutons au code "+ lastCharofSub);
                     if (isNumber == false) { //then put into code, without delimiters if lastchar is a number
                         code.append(lastCharofSub).append(0);
@@ -88,30 +90,22 @@ public class LZ {
             }
             i = j;
             j++;
-            
+
         }
     }
 
+    /**
+     *
+     * @param s is the String code input to be decoded
+     */
     public void decode(String s) {
         int beta = 1;
         StringBuilder s1 = new StringBuilder("");
         int len;
         int i = 0;
         int j = 1;
-//////      If reading a Binary Input
-////        if (s.charAt(j + 1) != 'A' || s.charAt(j + 1) != 'B') {
-////            if (i + 1 == j) {
-////                System.out.println("jjjjjjjjj");
-////                System.out.println(s.charAt(j));
-////            } else {
-////                System.out.println("fffffffff");
-////                System.out.println(s.substring(i + 1, j));
-////
-////            }
-////        }
 
-        //while we are in the string
-        while (j < s.length()) {
+        while (j < s.length()) {   //while we are in the string
             boolean isSpecial = false;
             if (Character.toString(s.charAt(i)).equals(delimiter) && j + delimiter.length() < s.length()) {
                 i++;
@@ -127,12 +121,8 @@ public class LZ {
 //                System.out.println("**************");
 //                System.out.println("**************");
 
-// We test if we have a letter or a number
-                if (j + 1 < s.length()) {
-                    boolean isNumber;
-
-                    isNumber = false;
-
+                if (j + 1 < s.length()) {// We test if we have a letter or a number
+                    boolean isNumber = false;
                     try {
 //                        System.out.println("A REGARDER " + s.charAt(j + 1));
                         Integer.parseInt(Character.toString(s.charAt(j + 1)));
@@ -173,19 +163,24 @@ public class LZ {
 
 //            System.out.println("SUB " + s.substring(i, j + 1));
 //            System.out.println("on regarde " + subInt + " et " + s.charAt(i) + " at i = " + i + " j = " + j);
-
             if (dictDecod.containsKey(subInt)) {
 //                System.out.println("dico contient " + subInt + " qui est " + dico(subInt));
-                if (String.valueOf(s.charAt(j-1)).equals("E")&&!s.substring(j).equals("E")) {//Epsilone decoding
+                if (String.valueOf(s.charAt(j - 1)).equals("E") && !s.substring(j).equals("E")) {//Epsilone decoding
 //                    System.out.println("__________________FIN___________");
 //                    System.out.println("Nous avons à la fin "+s.substring(j));
 //                    System.out.println("on rajoute "+dico(Integer.parseInt(s.substring(j))));
-                    decode.append(dico(Integer.parseInt(s.substring(j))));
-                    dictDecod.put(-1, dico(Integer.parseInt(s.substring(j))));
+                    try {
+                        decode.append(dico(Integer.parseInt(s.substring(j))));
+                        dictDecod.put(-1, dico(Integer.parseInt(s.substring(j))));
+                    } catch (NumberFormatException n) {
+                        j--;
+                        decode.append(dico(Integer.parseInt(s.substring(j))));
+                        dictDecod.put(-1, dico(Integer.parseInt(s.substring(j))));
+                    }
+
 //                    System.out.println("__________________FIN___________");
                     break;
                 }
-                //FONCTION A VERIFIER
                 String tmp_v = dico(subInt) + Character.toString(s.charAt(i));
 //                System.out.println("on met dans dico beta " + beta + " et " + tmp_v);
                 dictDecod.put(beta, tmp_v);
@@ -196,18 +191,7 @@ public class LZ {
                     decode.append(String.valueOf(s.charAt(i)));
                 }
             }
-////////                if (dictDecod.containsKey(Character.getNumericValue(s.charAt(i + 1)))) {
-////////                    if (String.valueOf(s.charAt(i)).equals("E")) {
-////////                        decode.append(dico(Character.getNumericValue(s.charAt(i + 1))));
-////////                        dictDecod.put(-1, dico(Character.getNumericValue(s.charAt(i + 1))));
-////////                        break;
-////////                    }
-////////                    dictDecod.put(beta, dico(Character.getNumericValue(s.charAt(i + 1))) + String.valueOf(s.charAt(i)));
-////////                    decode.append(dico(Character.getNumericValue(s.charAt(i + 1)))).append(String.valueOf(s.charAt(i)));
-////////                } else {
-////////                    dictDecod.put(beta, String.valueOf(s.charAt(i)));
-////////                    decode.append(String.valueOf(s.charAt(i)));
-////////                }
+
             beta++;
             //pb ici !
             // i += 2;
@@ -222,22 +206,10 @@ public class LZ {
 
 //            System.out.println("i = " + i);
 //            System.out.println("j = " + j);
-            if(Character.toString(decode.charAt(decode.length()-1)).equals("E")){
-                decode.deleteCharAt(decode.length()-1);
+            if (Character.toString(decode.charAt(decode.length() - 1)).equals("E")) {
+                decode.deleteCharAt(decode.length() - 1);
             }
         }
-//////      If reading Binary Input
-////        len = decode.length();
-////
-////        for (int k = 0; k < len; k++) {
-////            if (decode.charAt(k) == 'A') {
-////                s1.append('0');
-////            } else if (decode.charAt(k) == 'B') {
-////                s1.append('1');
-////            }
-////        }
-////        decode = s1;
-        
 
     }
 
@@ -250,12 +222,62 @@ public class LZ {
     }
 
     public String getCode() {
-        if(code.toString().isEmpty()){throw new IllegalStateException("Has not been coded");}
+        if (code.toString().isEmpty()) {
+            throw new IllegalStateException("Has not been coded");
+        }
         return code.toString();
     }
 
     public String getDecode() {
-        if(decode.toString().isEmpty()){throw new IllegalStateException("Has not been decoded");}
+        if (decode.toString().isEmpty()) {
+            throw new IllegalStateException("Has not been decoded");
+        }
         return decode.toString();
+    }
+
+    public boolean write(String input, String urlOutput) throws FileNotFoundException, IOException {
+
+        File file = new File(urlOutput);
+
+        DataOutputStream outFile = new DataOutputStream(new FileOutputStream(file.getPath()));
+        int j = 1_000;
+        int len = input.length();
+        for (int i = 0; i < len; i = i + 1000) {
+            if (j >= len) {
+
+                outFile.writeUTF(input.substring(i, len));
+                break;
+            }
+
+            outFile.writeUTF(input.substring(i, j));     //same size
+            //outFile.writeChars(z.getCode().substring(i, j)); //too big
+            //outFile.writeUTF(lz.getCode().substring(i, j));     //same size
+            j += 1000;
+
+        }
+        //// too big
+        //        for(char c:lz.getCode().toCharArray() ){
+        //        outFile.writeChar(c);
+        //        }
+        return true;
+    }
+
+    public String read(String url) throws FileNotFoundException, IOException {
+
+        FileInputStream fs = new FileInputStream(new File(url));
+
+        InputStreamReader isr = new InputStreamReader(fs);
+        String tmp;
+        StringBuilder sb = new StringBuilder("");
+        try (BufferedReader bf = new BufferedReader(isr)) {
+            while ((tmp = bf.readLine()) != null) {
+                sb.append(bf.readLine());
+            }
+            return sb.toString();
+//            code(sb.toString());
+//            write(getCode(), "test_write_code");
+
+        }
+
     }
 }

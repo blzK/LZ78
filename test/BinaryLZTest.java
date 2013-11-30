@@ -150,4 +150,6 @@ public class BinaryLZTest {
         System.out.println("longueur compressée " + lz.getCode().toString().length());
 
     }
+    
+ 
 }

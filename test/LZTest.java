@@ -163,10 +163,6 @@ public class LZTest {
             len = len - j;
 
         }
-//        System.out.println("i " + i + " j " + j);
-//        if (j != i) {
-//            sbResult.append("E").append(lz.getDictDecod())(i-j));
-//        }
         System.out.println(sum + " SUM ");
         System.out.println("len " + len + " j " + j);
         System.out.println("Code ");
