@@ -13,7 +13,7 @@ public class BinaryLZ {
 
     private final LZ lz = new LZ();
   /**
-     *
+     * Codes the data according to the LZ78 Algorithm.
      * @param input is the String input to be coded.
      * The input String must only contain '0' and '1' characters.
      */
@@ -41,7 +41,7 @@ public class BinaryLZ {
         return lz.getCode();
     }
     /**
-     *
+     * Decodes the data according to the LZ78 Algorithm.
      * @param input is the String code input to be decoded.
      */
     public void decode(String input) {

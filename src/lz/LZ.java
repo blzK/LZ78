@@ -1,13 +1,5 @@
 package lz;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,7 +17,6 @@ public class LZ {
     private final StringBuilder decode = new StringBuilder("");
     private final String delimiter = "|";
 
-    
     /**
      *
      * @return returns the dictionnary used for encoding.
@@ -33,7 +24,8 @@ public class LZ {
     public Map<String, Integer> getDict() {
         return dict;
     }
-/**
+
+    /**
      *
      * @return returns the dictionnary used for decoding.
      */
@@ -42,6 +34,7 @@ public class LZ {
     }
 
     /**
+     * Codes the data according to the LZ78 Algorithm.
      *
      * @param s is the String input to be coded
      */
@@ -94,6 +87,7 @@ public class LZ {
     }
 
     /**
+     * Decodes the data according to the LZ78 Algorithm.
      *
      * @param s is the String code input to be decoded
      */
