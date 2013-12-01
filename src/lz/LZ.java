@@ -39,6 +39,7 @@ public class LZ {
      * @param s is the String input to be coded
      */
     public void code(String s) {
+        if(s==null){throw new IllegalArgumentException();}
         int alpha = 0;
         int i = 0;
         int j = 1;
@@ -92,6 +93,7 @@ public class LZ {
      * @param s is the String code input to be decoded
      */
     public void decode(String s) {
+        if(s==null){throw new IllegalArgumentException();}
         int beta = 1;
         StringBuilder s1 = new StringBuilder("");
         int len;
