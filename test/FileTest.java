@@ -19,24 +19,25 @@ public class FileTest {
     }
     
     
-    public long code() throws IOException {
-       String[] args={"-c","image.jpg"};
+    public long code(String urlInput) throws IOException {
+       String[] args={"-c",urlInput};
        Main.main(args);
-       File file = new File("image.jpg");
+       File file = new File(urlInput);
        return file.length();
     }
     
        
-    public  long decode() throws IOException {
-       String[] args={"-d","image.jpg.mz78"};
+    public  long decode(String urlInput) throws IOException {
+       String[] args={"-d",urlInput+".mz78"};
        Main.main(args);
-       File file = new File("image.jpg");
+       File file = new File(urlInput);
        return file.length();
     }
     
        @Test
     public  void compressDecompress() throws IOException {
-       assertTrue(code()==decode());
+       assertTrue(code("simpleImage.png")==decode("simpleImage.png"));
+       assertTrue(code("verySimpleUncompressedImage")==decode("verySimpleUncompressedImage"));
     }
     
   
