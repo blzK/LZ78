@@ -6,6 +6,7 @@
             <name>LZ</name>
             <source-roots>
                 <root id="src.dir" name="src"/>
+                <root id="src.dir" name="src"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>

@@ -1,4 +1,4 @@
-package main;
+
 
 import file.FileManager;
 import codageParPlages.CodageParPlages;
@@ -34,7 +34,7 @@ public class Main {
 //                lz.write("test_write");
 //                lz.read("image.jpg");
                 
-                lz.write(lz.read("files2_original_1.txt"), "image_copy.test" );
+//                lz.write(lz.read("files2_original_1.txt"), "image_copy.test" );
                 try {
                     file.writeC(lz.getCode(), ".mz78", args[1]);
                 } catch (FileNotFoundException ex) {
