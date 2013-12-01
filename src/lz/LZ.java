@@ -25,10 +25,18 @@ public class LZ {
     private final StringBuilder decode = new StringBuilder("");
     private final String delimiter = "|";
 
+    
+    /**
+     *
+     * @return returns the dictionnary used for encoding.
+     */
     public Map<String, Integer> getDict() {
         return dict;
     }
-
+/**
+     *
+     * @return returns the dictionnary used for decoding.
+     */
     public Map<Integer, String> getDictDecod() {
         return dictDecod;
     }
@@ -42,14 +50,9 @@ public class LZ {
         int i = 0;
         int j = 1;
         int len = s.length();
-
         while (i < s.length() && j <= s.length()) {
-
             String sub = s.substring(i, j);
             String sub2 = s.substring(i, j - 1);
-//            System.out.println("************");
-//            System.out.println("SUB = "+ sub + " SUB2= " + sub2);
-
             if (dict.containsKey(sub)) {// If in dictionnary, we increase search field
                 j++;
                 if (j - 1 == s.length()) {//If at the end of the String don't, just end code
@@ -57,9 +60,7 @@ public class LZ {
                     break;
                 }
                 continue;
-
             } else {// If not in dictionnary
-
                 char lastCharofSub = s.charAt(j - 1);   //Next char
                 boolean isNumber = false;   //IsNext char a number?
                 try {
@@ -70,7 +71,6 @@ public class LZ {
                 }
                 if (dico(sub2) == null) { //if subentry not in dictionnary then create new entry in dictionnary
                     dict.put(sub, alpha + 1);
-//                    System.out.println("Nous rajoutons au code "+ lastCharofSub);
                     if (isNumber == false) { //then put into code, without delimiters if lastchar is a number
                         code.append(lastCharofSub).append(0);
                     } else {//put into code with delimiters
@@ -79,7 +79,6 @@ public class LZ {
 
                 } else {    //if subentry in dictionnary, create entry for entire entry
                     dict.put(sub, alpha + 1);
-//                    System.out.println("Nous rajoutons au code "+ dico(sub2));
                     if (isNumber == false) {
                         code.append(s.charAt(j - 1)).append(dico(sub2));
                     } else {
@@ -113,29 +112,17 @@ public class LZ {
                 isSpecial = true;
             }
             int subInt;
-//            System.out.println("**************");
-//            System.out.println("i = " + i);
-//            System.out.println("j = " + j);
-//            System.out.println("**************");
             if (j + 1 < s.length()) {
-//                System.out.println("**************");
-//                System.out.println("**************");
-
                 if (j + 1 < s.length()) {// We test if we have a letter or a number
                     boolean isNumber = false;
                     try {
-//                        System.out.println("A REGARDER " + s.charAt(j + 1));
                         Integer.parseInt(Character.toString(s.charAt(j + 1)));
                         isNumber = true;
                     } catch (NumberFormatException e) {
                         isNumber = false;
                     }
-                    // while (s.charAt(j + 1) != 'A' || s.charAt(j + 1) != 'B') {
                     while (isNumber == true && j < s.length()) {  //we take all the number we get
-//                        System.out.println("NOMBRE A DEUX CHIFFRES");
-//                        System.out.println(s.charAt(j + 1));
                         j++;
-//                        System.out.println("on increment DONC j =" + j);
                         if (j + 1 < s.length()) {
                             try {
                                 Integer.parseInt(Character.toString(s.charAt(j + 1)));
@@ -149,26 +136,16 @@ public class LZ {
                     }
                 }
             }
-
             if (i + 1 == j) { //We test if is a Number 
-//                System.out.println("Nous avons un nombre à 1 chiffre");
                 subInt = Character.getNumericValue(s.charAt(j));
             } else if (isSpecial == true) {
                 subInt = Integer.parseInt(s.substring(i + 2, j + 1));
             } else {
-//                System.out.println("Nous avons un nommbre à plusieurs  chiffres");
                 subInt = Integer.parseInt(s.substring(i + 1, j + 1));
 
             }
-
-//            System.out.println("SUB " + s.substring(i, j + 1));
-//            System.out.println("on regarde " + subInt + " et " + s.charAt(i) + " at i = " + i + " j = " + j);
             if (dictDecod.containsKey(subInt)) {
-//                System.out.println("dico contient " + subInt + " qui est " + dico(subInt));
                 if (String.valueOf(s.charAt(j - 1)).equals("E") && !s.substring(j).equals("E")) {//Epsilone decoding
-//                    System.out.println("__________________FIN___________");
-//                    System.out.println("Nous avons à la fin "+s.substring(j));
-//                    System.out.println("on rajoute "+dico(Integer.parseInt(s.substring(j))));
                     try {
                         decode.append(dico(Integer.parseInt(s.substring(j))));
                         dictDecod.put(-1, dico(Integer.parseInt(s.substring(j))));
@@ -177,12 +154,9 @@ public class LZ {
                         decode.append(dico(Integer.parseInt(s.substring(j))));
                         dictDecod.put(-1, dico(Integer.parseInt(s.substring(j))));
                     }
-
-//                    System.out.println("__________________FIN___________");
                     break;
                 }
                 String tmp_v = dico(subInt) + Character.toString(s.charAt(i));
-//                System.out.println("on met dans dico beta " + beta + " et " + tmp_v);
                 dictDecod.put(beta, tmp_v);
                 decode.append(tmp_v); //On en est là
             } else {
@@ -191,26 +165,13 @@ public class LZ {
                     decode.append(String.valueOf(s.charAt(i)));
                 }
             }
-
             beta++;
-            //pb ici !
-            // i += 2;
-//            System.out.println("on increment j");
-//                j++;
-//
-//            }
-//            System.out.println("i = " + i);
-//            System.out.println("j = " + j);
             i = j + 1;
             j = i + 1;
-
-//            System.out.println("i = " + i);
-//            System.out.println("j = " + j);
             if (Character.toString(decode.charAt(decode.length() - 1)).equals("E")) {
                 decode.deleteCharAt(decode.length() - 1);
             }
         }
-
     }
 
     private Integer dico(String search) {
@@ -221,6 +182,10 @@ public class LZ {
         return dictDecod.get(search);
     }
 
+    /**
+     *
+     * @return returns the coded data.
+     */
     public String getCode() {
         if (code.toString().isEmpty()) {
             throw new IllegalStateException("Has not been coded");
@@ -228,56 +193,14 @@ public class LZ {
         return code.toString();
     }
 
+    /**
+     *
+     * @return returns the uncoded data.
+     */
     public String getDecode() {
         if (decode.toString().isEmpty()) {
             throw new IllegalStateException("Has not been decoded");
         }
         return decode.toString();
-    }
-
-    public boolean write(String input, String urlOutput) throws FileNotFoundException, IOException {
-
-        File file = new File(urlOutput);
-
-        DataOutputStream outFile = new DataOutputStream(new FileOutputStream(file.getPath()));
-        int j = 1_000;
-        int len = input.length();
-        for (int i = 0; i < len; i = i + 1000) {
-            if (j >= len) {
-
-                outFile.writeUTF(input.substring(i, len));
-                break;
-            }
-
-            outFile.writeUTF(input.substring(i, j));     //same size
-            //outFile.writeChars(z.getCode().substring(i, j)); //too big
-            //outFile.writeUTF(lz.getCode().substring(i, j));     //same size
-            j += 1000;
-
-        }
-        //// too big
-        //        for(char c:lz.getCode().toCharArray() ){
-        //        outFile.writeChar(c);
-        //        }
-        return true;
-    }
-
-    public String read(String url) throws FileNotFoundException, IOException {
-
-        FileInputStream fs = new FileInputStream(new File(url));
-
-        InputStreamReader isr = new InputStreamReader(fs);
-        String tmp;
-        StringBuilder sb = new StringBuilder("");
-        try (BufferedReader bf = new BufferedReader(isr)) {
-            while ((tmp = bf.readLine()) != null) {
-                sb.append(bf.readLine());
-            }
-            return sb.toString();
-//            code(sb.toString());
-//            write(getCode(), "test_write_code");
-
-        }
-
     }
 }

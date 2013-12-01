@@ -26,15 +26,12 @@ public class Main {
                 } catch (IOException ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
                 mtf = new Mtf();
                 mtf.codage(word);
                 lz = new BinaryLZ();
                 lz.code(mtf.getCode());
-//                encoding test
-//                lz.write("test_write");
-//                lz.read("image.jpg");
                 
-//                lz.write(lz.read("files2_original_1.txt"), "image_copy.test" );
                 try {
                     file.writeC(lz.getCode(), ".mz78", args[1]);
                 } catch (FileNotFoundException ex) {
