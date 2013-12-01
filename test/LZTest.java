@@ -1,19 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.util.Random;
 import lz.LZ;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
-/**
- *
- * @author azathoth
- */
 public class LZTest {
 
     public LZTest() {
@@ -24,7 +14,6 @@ public class LZTest {
         LZ lz = new LZ();
         lz.code("abc");
         assertEquals("a0b0c0", lz.getCode());
-
     }
 
     @Test
@@ -45,7 +34,6 @@ public class LZTest {
     public void testCodeInteger2() {
         LZ lz = new LZ();
         lz.code("111111");
-
         System.out.println(lz.getCode());
         assertEquals("|1|0|1|1|1|2", lz.getCode());
     }
@@ -55,7 +43,6 @@ public class LZTest {
         LZ lz = new LZ();
         lz.code("aa");
         assertEquals("a0E1", lz.getCode());
-
     }
 
     @Test
@@ -63,7 +50,6 @@ public class LZTest {
         LZ lz = new LZ();
         lz.code("1111");
         assertEquals("|1|0|1|1E1", lz.getCode());
-
     }
 
     @Test
@@ -71,7 +57,6 @@ public class LZTest {
         LZ lz = new LZ();
         lz.code("aaabc");
         assertEquals("a0a1b0c0", lz.getCode());
-
     }
 
     @Test
@@ -79,7 +64,6 @@ public class LZTest {
         LZ lz = new LZ();
         lz.code("aaa");
         assertEquals("a0a1", lz.getCode());
-
     }
 
     @Test
@@ -92,7 +76,6 @@ public class LZTest {
         System.out.println(lz.getCode());
         System.out.println("a0a1b0b2b1E1");
         assertEquals("a0a1b0b2b1E1", lz.getCode());
-
     }
 
     @Test
@@ -103,8 +86,6 @@ public class LZTest {
         System.out.println(lz.getDict());
         System.out.println("Code");
         System.out.println(lz.getCode());
-        //System.out.println("a0a1b0b2aE");
-
         assertEquals("a0b0b2b3c1c0c6E3", lz.getCode());
 
     }
@@ -117,8 +98,6 @@ public class LZTest {
         System.out.println(lz.getDict());
         System.out.println("Code");
         System.out.println(lz.getCode());
-        //System.out.println("a0a1b0b2aE");
-
         assertEquals("a0b0b1a3a2b5b4E3", lz.getCode());
 
     }
@@ -127,25 +106,19 @@ public class LZTest {
     public void testLongCode4() {
         LZ lz = new LZ();
         lz.code("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"); //55
-        //
         System.out.println("Dictionnaire");
         System.out.println(lz.getDict());
         System.out.println("Code");
         System.out.println(lz.getCode());
-        //System.out.println("a0a1b0b2aE");
-
         assertEquals("a0a1a2a3a4a5a6a7a8a9a10", lz.getCode());
 
     }
 
     @Test
-    public void testLongCode6() {
-        //This test only applies to codes not ending with Epsilone
+    public void testLongCode6() {//This test only applies to codes not ending with Epsilone
         LZ lz = new LZ();
-
         StringBuilder sb = new StringBuilder("");
         StringBuilder sbResult = new StringBuilder("");
-
         int sum = 0;
         int i = 0;
         for (i = 0; i < 55; i++) {
@@ -153,15 +126,12 @@ public class LZTest {
             sb.append("a");
 
         }
-
         int len = sb.toString().length();
         int j = 1;
         while (len > 0) {
-
             sbResult.append("a").append(j - 1);
             j++;
             len = len - j;
-
         }
         System.out.println(sum + " SUM ");
         System.out.println("len " + len + " j " + j);
@@ -182,17 +152,14 @@ public class LZTest {
     public void testCompression1() {
         LZ lz = new LZ();
         StringBuilder sb = new StringBuilder("");
-
         int sum = 0;
         int i = 0;
         for (i = 0; i < 150; i++) {
             sum += i;
             sb.append("blablablejrbaejrbakerjbhaeklrjb");
         }
-
         System.out.println("code ");
         lz.code(sb.toString());
-
         String code = lz.getCode();
         System.out.println(code);
         lz.decode(lz.getCode());
@@ -202,7 +169,6 @@ public class LZTest {
         System.out.println(" CODE ");
         System.out.println(code);
         assertEquals(sb.toString(), lz.getDecode().toString());
-
         assertTrue(sb.toString().length() > lz.getCode().toString().length());
         System.out.println("longueur initiale " + sb.toString().length());
         System.out.println("longueur compressée " + lz.getCode().toString().length());
@@ -213,36 +179,28 @@ public class LZTest {
     public void testCompressionredundantRandomString() {
         LZ lz = new LZ();
         StringBuilder sb = new StringBuilder("");
-
         Random random = new Random();
         char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         for (int i = 0; i < 10; i++) {
             char c = chars[random.nextInt(chars.length)];
             sb.append(c);
         }
-
         for (int i = 0; i < 4; i++) {
-
             sb.append(sb.toString());
         }
-
         System.out.println("code ");
         lz.code(sb.toString());
-
         String code = lz.getCode();
         System.out.println(code);
         lz.decode(lz.getCode());
         System.out.println(lz.getDecode());
-
         System.out.println(lz.getDictDecod());
         System.out.println(" CODE ");
         System.out.println(code);
-        //assertEquals(sb.toString(), lz.getDecode().toString());
         assertEquals(sb.toString(), lz.getDecode().toString());
         assertTrue(sb.toString().length() > lz.getCode().toString().length());
         System.out.println("longueur initiale " + sb.toString().length());
         System.out.println("longueur compressée " + lz.getCode().toString().length());
-
     }
 
     @Test
@@ -259,58 +217,49 @@ public class LZTest {
     public void decodeTest2() {
         LZ lz = new LZ();
         lz.code("111111");
-
         System.out.println("code ");
         System.out.println(lz.getCode());
         lz.decode(lz.getCode().toString());
         System.out.println(lz.getDecode());
         System.out.println(lz.getDictDecod());
         assertEquals("111111", lz.getDecode().toString());
-
     }
 
     @Test
     public void decodeTest3() {
         LZ lz = new LZ();
-
         lz.decode("a0a1a2a3a4a5a6a7a8a9a10");
         System.out.println(lz.getDecode());
         System.out.println(lz.getDictDecod());
         System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         assertEquals("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", lz.getDecode().toString());
-
     }
 
     @Test
-    public void decodeTest5() {
+    public void decodeVeryLongMixedTest() {
         LZ lz = new LZ();
         StringBuilder sb = new StringBuilder("");
-
         int sum = 0;
         int i = 0;
-        for (i = 0; i < 15; i++) {
+        for (i = 0; i < 150_000; i++) {
             sum += i;
-            sb.append("011235498402106846084065410687408/0/70");
+            sb.append("01123549wsf8402106846bcvbx084065410687408/0/70");
         }
         System.out.println("code ");
         lz.code(sb.toString());
-
         String code = lz.getCode();
         System.out.println(code);
         lz.decode(lz.getCode());
-
         System.out.println(lz.getDecode());
         System.out.println(lz.getDictDecod());
         System.out.println(" CODE ");
         System.out.println(code);
         assertEquals(sb.toString(), lz.getDecode().toString());
-
     }
 
     @Test
     public void decodeTest4() {
         LZ lz = new LZ();
-
         lz.code("La religion est l'esprit d'un monde sans esprit comme elle est le coeur d'un monde sans coeur");
         System.out.println("code ");
         System.out.println(lz.getCode());
@@ -326,7 +275,7 @@ public class LZTest {
     }
 
     @Test
-    public void decodeTest6() {
+    public void decodeTestMixedInput() {
         LZ lz = new LZ();
         String input = "La religion est l'es45465prit d'un monde sans esprit 486486comme elle e86456st le coeur d'un mo5456nde sans coeur";
         lz.code(input);
@@ -342,5 +291,5 @@ public class LZTest {
         assertEquals(input, lz.getDecode());
 
     }
- 
+
 }
